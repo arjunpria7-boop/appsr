@@ -173,16 +173,16 @@
     <div class="container">
         <header class="header">
             <h1>Chrome Link Opener</h1>
-            <p>Tap the first icon to open the link in Chrome.</p>
+            <p>Tap an active icon to open its link in Chrome.</p>
         </header>
 
         <main class="card">
             <div class="logo-grid">
-                <div id="open-link-btn" class="logo-item active" role="button" tabindex="0" aria-label="Open Link in Chrome">
-                    <img src="https://i.postimg.cc/HxTWJgHh/20251028-164413.png" alt="Open Link"/>
+                <div id="open-link-btn-1" class="logo-item active" role="button" tabindex="0" aria-label="Open Link 1 in Chrome">
+                    <img src="https://i.postimg.cc/HxTWJgHh/20251028-164413.png" alt="Open Link 1"/>
                 </div>
-                <div class="logo-item inactive">
-                    <img src="https://i.postimg.cc/SsYdzwrV/20251028-164252.png" alt="Logo 2 (inactive)"/>
+                <div id="open-link-btn-2" class="logo-item active" role="button" tabindex="0" aria-label="Open Link 2 in Chrome">
+                    <img src="https://i.postimg.cc/SsYdzwrV/20251028-164252.png" alt="Open Link 2"/>
                 </div>
                 <div class="logo-item inactive">
                     <img src="https://i.postimg.cc/nzfj0gxy/20251028-164547.png" alt="Logo 3 (inactive)"/>
@@ -212,35 +212,49 @@
     <script>
         // Use 'var' and function expressions for maximum browser compatibility
         (function() {
-            var url = "https://kgggrj.vercel.app/";
+            var links = {
+                'open-link-btn-1': 'https://kgggrj.vercel.app/',
+                'open-link-btn-2': 'https://a-v1-0.vercel.app/'
+            };
 
-            var openLinkBtn = document.getElementById('open-link-btn');
             var modal = document.getElementById('fallback-modal');
             var urlText = document.getElementById('url-text');
             var copyBtn = document.getElementById('copy-btn');
             var closeBtn = document.getElementById('close-btn');
+            
+            var currentUrlForModal = '';
 
-            urlText.textContent = url;
+            var setupLinkButton = function(buttonId) {
+                var button = document.getElementById(buttonId);
+                var url = links[buttonId];
 
-            openLinkBtn.addEventListener('click', function() {
-                // Show the fallback UI immediately.
-                modal.style.display = 'flex';
-                
-                // Attempt to open via Android Intent
-                var intentUrl = "intent://" + url.replace(/^https?:\/\//, '') + "#Intent;scheme=https;package=com.android.chrome;end;";
-                window.location.href = intentUrl;
-            });
+                if (button && url) {
+                    button.addEventListener('click', function() {
+                        currentUrlForModal = url;
+                        urlText.textContent = currentUrlForModal;
+                        modal.style.display = 'flex';
+                        
+                        var intentUrl = "intent://" + currentUrlForModal.replace(/^https?:\/\//, '') + "#Intent;scheme=https;package=com.android.chrome;end;";
+                        window.location.href = intentUrl;
+                    });
+                }
+            };
+            
+            for (var buttonId in links) {
+                if (Object.prototype.hasOwnProperty.call(links, buttonId)) {
+                    setupLinkButton(buttonId);
+                }
+            }
 
             closeBtn.addEventListener('click', function() {
                 modal.style.display = 'none';
             });
             
             copyBtn.addEventListener('click', function() {
-                // The 'navigator.clipboard' API might not exist on old browsers.
-                // We create a fallback using a temporary textarea.
+                if (!currentUrlForModal) return;
+
                 var tempTextArea = document.createElement('textarea');
-                tempTextArea.value = url;
-                // Make it non-editable and invisible
+                tempTextArea.value = currentUrlForModal;
                 tempTextArea.setAttribute('readonly', '');
                 tempTextArea.style.position = 'absolute';
                 tempTextArea.style.left = '-9999px';
