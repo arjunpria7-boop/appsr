@@ -14,13 +14,15 @@ const App: React.FC = () => {
 
     const handleLogoClick = (index: number) => {
         if (index === 0) {
-            // Show the fallback UI
+            // Show the fallback UI immediately. This way, if the intent fails,
+            // the user has an immediate next step.
             setShowLink(true);
             setCopied(false);
 
-            // This URL scheme attempts to open the link directly in Chrome.
-            // It might not work on all devices or browsers.
-            window.location.href = `googlechrome://navigate?url=${encodeURIComponent(url)}`;
+            // Use Android Intent URL. This is much more reliable on Android devices
+            // for opening a link in a specific application like Chrome.
+            const intentUrl = `intent://${url.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=com.android.chrome;end;`;
+            window.location.href = intentUrl;
         }
     };
 
