@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const App: React.FC = () => {
     const logos = [
@@ -7,18 +7,32 @@ const App: React.FC = () => {
         "https://i.postimg.cc/nzfj0gxy/20251028-164547.png",
         "https://i.postimg.cc/BvHtLpFh/20251028-164355.png"
     ];
+    
+    const [showLink, setShowLink] = useState(false);
+    const [copied, setCopied] = useState(false);
+    const url = "https://kgggrj.vercel.app/";
 
     const handleLogoClick = (index: number) => {
         if (index === 0) {
-            const url = "https://kgggrj.vercel.app/";
+            // Show the fallback UI
+            setShowLink(true);
+            setCopied(false);
+
             // This URL scheme attempts to open the link directly in Chrome.
-            // Using encodeURIComponent is a good practice for URLs.
+            // It might not work on all devices or browsers.
             window.location.href = `googlechrome://navigate?url=${encodeURIComponent(url)}`;
         }
     };
 
+    const handleCopy = () => {
+        navigator.clipboard.writeText(url).then(() => {
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000); // Reset after 2 seconds
+        });
+    };
+
     return (
-        <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-4 font-sans">
+        <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-4 font-sans relative">
             <header className="text-center mb-8">
                 <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-cyan-400">Chrome Link Opener</h1>
                 <p className="text-gray-400 mt-2">Tap the first icon to open the link in Chrome.</p>
@@ -39,6 +53,35 @@ const App: React.FC = () => {
                     ))}
                 </div>
             </div>
+            
+            {showLink && (
+                <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50" aria-modal="true" role="dialog">
+                    <div className="bg-gray-800 rounded-2xl shadow-2xl p-6 md:p-8 w-full max-w-sm text-center">
+                        <h2 className="text-xl font-bold text-cyan-400 mb-2">Link Ready</h2>
+                        <p className="text-gray-400 mb-4">If Chrome didn't open, copy the link below and paste it into your Chrome browser.</p>
+                        
+                        <div className="bg-gray-900 rounded-lg p-3 text-cyan-300 break-words mb-4" aria-label="Link to copy">
+                            {url}
+                        </div>
+
+                        <button
+                            onClick={handleCopy}
+                            className="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 mb-3"
+                        >
+                            {copied ? 'Copied!' : 'Copy Link'}
+                        </button>
+
+                        <button
+                            onClick={() => setShowLink(false)}
+                            className="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300"
+                             aria-label="Close dialog"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            )}
+
             <footer className="text-center mt-8 text-gray-500 text-sm">
                 <p>Designed for devices where the default browser has issues with modern websites.</p>
             </footer>
