@@ -1,22 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chrome Link Opener</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-  <script type="importmap">
-{
-  "imports": {
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0"
-  }
-}
-</script>
+    <style>
+        :root {
+            --bg-dark: #030712;
+            --card-bg: #111827;
+            --logo-bg: rgba(55, 65, 81, 0.5);
+            --text-light: #f9fafb;
+            --text-secondary: #9ca3af;
+            --cyan-400: #22d3ee;
+            --cyan-500: #06b6d4;
+            --cyan-600: #0891b2;
+            --ring-cyan: #06b6d4;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 28rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--cyan-400);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            margin: 0 0 2rem 0;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+        }
+
+        .logo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .logo-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--logo-bg);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo-item.active {
+            cursor: pointer;
+            border: 2px solid var(--ring-cyan);
+        }
+        
+        .logo-item.active:hover {
+            transform: scale(1.1);
+        }
+
+        .logo-item.inactive {
+            opacity: 0.5;
+            cursor: default;
+        }
+
+        .logo-item img {
+            height: 6rem;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .footer {
+            margin-top: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.75);
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            z-index: 50;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            width: 100%;
+            max-width: 24rem;
+            text-align: center;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .modal-content h2 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--cyan-400);
+            margin: 0 0 0.5rem 0;
+        }
+        
+        .modal-content p {
+            color: var(--text-secondary);
+            margin: 0 0 1rem 0;
+        }
+
+        .url-display {
+            background-color: var(--bg-dark);
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            color: var(--cyan-400);
+            word-wrap: break-word;
+            margin-bottom: 1rem;
+            font-family: monospace;
+        }
+
+        .modal-button {
+            width: 100%;
+            font-weight: bold;
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-bottom: 0.75rem;
+            color: var(--text-light);
+        }
+        
+        .modal-button.copy {
+            background-color: var(--cyan-600);
+        }
+        .modal-button.copy:hover {
+            background-color: var(--cyan-500);
+        }
+        
+        .modal-button.close {
+            background-color: #4b5563; /* gray-600 */
+        }
+        .modal-button.close:hover {
+            background-color: #6b7280; /* gray-500 */
+        }
+    </style>
 </head>
-  <body class="bg-gray-900">
-    <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
-  </body>
+<body>
+
+    <div class="container">
+        <header class="header">
+            <h1>Chrome Link Opener</h1>
+            <p>Tap the first icon to open the link in Chrome.</p>
+        </header>
+
+        <main class="card">
+            <div class="logo-grid">
+                <div id="open-link-btn" class="logo-item active" role="button" tabindex="0" aria-label="Open Link in Chrome">
+                    <img src="https://i.postimg.cc/HxTWJgHh/20251028-164413.png" alt="Open Link"/>
+                </div>
+                <div class="logo-item inactive">
+                    <img src="https://i.postimg.cc/SsYdzwrV/20251028-164252.png" alt="Logo 2 (inactive)"/>
+                </div>
+                <div class="logo-item inactive">
+                    <img src="https://i.postimg.cc/nzfj0gxy/20251028-164547.png" alt="Logo 3 (inactive)"/>
+                </div>
+                <div class="logo-item inactive">
+                    <img src="https://i.postimg.cc/BvHtLpFh/20251028-164355.png" alt="Logo 4 (inactive)"/>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Designed for devices where the default browser has issues with modern websites.</p>
+        </footer>
+    </div>
+    
+    <!-- Fallback Modal -->
+    <div id="fallback-modal" class="modal-overlay" role="dialog" aria-modal="true">
+        <div class="modal-content">
+            <h2>Link Ready</h2>
+            <p>If Chrome didn't open, copy the link below and paste it into your Chrome browser.</p>
+            <div id="url-text" class="url-display"></div>
+            <button id="copy-btn" class="modal-button copy">Copy Link</button>
+            <button id="close-btn" class="modal-button close">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Use 'var' and function expressions for maximum browser compatibility
+        (function() {
+            var url = "https://kgggrj.vercel.app/";
+
+            var openLinkBtn = document.getElementById('open-link-btn');
+            var modal = document.getElementById('fallback-modal');
+            var urlText = document.getElementById('url-text');
+            var copyBtn = document.getElementById('copy-btn');
+            var closeBtn = document.getElementById('close-btn');
+
+            urlText.textContent = url;
+
+            openLinkBtn.addEventListener('click', function() {
+                // Show the fallback UI immediately.
+                modal.style.display = 'flex';
+                
+                // Attempt to open via Android Intent
+                var intentUrl = "intent://" + url.replace(/^https?:\/\//, '') + "#Intent;scheme=https;package=com.android.chrome;end;";
+                window.location.href = intentUrl;
+            });
+
+            closeBtn.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+            
+            copyBtn.addEventListener('click', function() {
+                // The 'navigator.clipboard' API might not exist on old browsers.
+                // We create a fallback using a temporary textarea.
+                var tempTextArea = document.createElement('textarea');
+                tempTextArea.value = url;
+                // Make it non-editable and invisible
+                tempTextArea.setAttribute('readonly', '');
+                tempTextArea.style.position = 'absolute';
+                tempTextArea.style.left = '-9999px';
+                document.body.appendChild(tempTextArea);
+                
+                tempTextArea.select();
+                
+                try {
+                    document.execCommand('copy');
+                    copyBtn.textContent = 'Copied!';
+                } catch (err) {
+                    copyBtn.textContent = 'Copy Failed';
+                }
+                
+                document.body.removeChild(tempTextArea);
+
+                setTimeout(function() {
+                    copyBtn.textContent = 'Copy Link';
+                }, 2000);
+            });
+        })();
+    </script>
+</body>
 </html>
