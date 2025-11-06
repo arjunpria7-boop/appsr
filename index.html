@@ -4,78 +4,105 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Key</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-dark: #030712;
-            --card-bg: #111827;
-            --logo-bg: rgba(55, 65, 81, 0.5);
             --text-light: #f9fafb;
-            --text-secondary: #9ca3af;
-            --cyan-400: #22d3ee;
-            --cyan-500: #06b6d4;
-            --cyan-600: #0891b2;
-            --ring-cyan: #06b6d4;
-            --gray-600: #4b5563;
-            --gold-600: #c59633;
-            --gold-500: #d4a94a;
+            --text-secondary: #d1d5db;
+            --cyan-glow: rgba(34, 211, 238, 0.4);
+            --gold-glow: rgba(212, 169, 74, 0.5);
+            --glass-bg: rgba(31, 41, 55, 0.25);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --button-bg: rgba(55, 65, 81, 0.4);
+            --button-hover-bg: rgba(55, 65, 81, 0.7);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
         }
 
         body {
             margin: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             background-color: var(--bg-dark);
             color: var(--text-light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 1rem;
-            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(320deg, #0891b2, #7c3aed, #030712);
+            background-size: 400% 400%;
+            animation: gradient-animation 20s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .container {
             width: 100%;
-            max-width: 28rem;
-            text-align: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
         }
 
         .card {
-            background-color: var(--card-bg);
-            border-radius: 1rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            padding: 2rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 1.5rem;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 26rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         /* Password Display */
         .password-container {
             margin-bottom: 2rem;
-        }
-        .password-label {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            margin: 0 0 0.5rem 0;
-            text-align: left;
+            width: 100%;
         }
         .password-display {
-            background-color: var(--bg-dark);
-            border-radius: 0.5rem;
+            background-color: rgba(3, 7, 18, 0.5);
+            border-radius: 0.75rem;
             padding: 1rem;
-            min-height: 2rem;
+            min-height: 3rem;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.75rem;
-            transition: transform 0.2s ease;
-            flex-grow: 1;
+            letter-spacing: 0.5rem;
+            font-size: 2rem;
+            color: var(--text-light);
         }
-        .password-dot {
-            width: 1rem;
-            height: 1rem;
-            background-color: var(--cyan-400);
-            border-radius: 50%;
+        .password-char {
+            display: inline-block;
+            animation: fadeIn 0.3s ease forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .password-display.shake {
             animation: shake 0.5s;
+        }
+        .password-display.pop {
+            animation: pop 0.2s ease-out;
         }
 
         @keyframes shake {
@@ -84,83 +111,90 @@
             20%, 40%, 60%, 80% { transform: translateX(5px); }
         }
 
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
         /* Keypad */
         .keypad {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 0.75rem;
+            gap: 1rem;
+            width: 100%;
         }
 
         .keypad-btn {
             font-size: 1.5rem;
-            font-weight: bold;
+            font-weight: 600;
             color: var(--text-light);
-            background-color: var(--logo-bg);
-            border: 2px solid transparent;
-            border-radius: 0.5rem;
+            background: var(--button-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 0.75rem;
             padding: 1rem;
             cursor: pointer;
-            transition: background-color 0.3s, border-color 0.3s;
-            -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
+            transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
             aspect-ratio: 1 / 1;
             display: flex;
             justify-content: center;
             align-items: center;
+            backdrop-filter: blur(5px);
         }
         .keypad-btn:hover {
-            background-color: rgba(55, 65, 81, 0.8);
+            background-color: var(--button-hover-bg);
+            box-shadow: 0 0 15px var(--cyan-glow);
+            transform: translateY(-2px);
         }
         .keypad-btn:active {
-            border-color: var(--ring-cyan);
+            transform: scale(0.95);
         }
-        .keypad-btn.operator {
-            background-color: var(--gray-600);
-        }
-        .keypad-btn.operator:hover {
-            background-color: #6b7280;
-        }
-        .keypad-btn.function {
-            background-color: var(--cyan-600);
-            color: var(--bg-dark);
-        }
-        .keypad-btn.function:hover {
-            background-color: var(--cyan-500);
+        .keypad-btn.function, .keypad-btn.operator {
+            color: #22d3ee;
         }
         .keypad-btn.enter {
-            background-color: var(--gold-600);
-            color: var(--bg-dark);
+            color: #d4a94a;
         }
         .keypad-btn.enter:hover {
-            background-color: var(--gold-500);
+             box-shadow: 0 0 15px var(--gold-glow);
         }
-
 
         /* Modal Styles */
         .modal-overlay {
-            display: none; /* Hidden by default */
+            display: none;
             position: fixed;
             inset: 0;
-            background-color: rgba(0, 0, 0, 0.75);
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             align-items: center;
             justify-content: center;
             padding: 1rem;
             z-index: 50;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .modal-content {
-            background-color: var(--card-bg);
-            border-radius: 1rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 1.5rem;
             padding: 2rem;
             width: 100%;
             max-width: 24rem;
             text-align: center;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
         
         .modal-content h2 {
             font-size: 1.25rem;
-            font-weight: bold;
-            color: var(--cyan-400);
+            font-weight: 700;
+            color: #67e8f9;
             margin: 0 0 0.5rem 0;
         }
         
@@ -170,10 +204,10 @@
         }
 
         .url-display {
-            background-color: var(--bg-dark);
+            background-color: rgba(3, 7, 18, 0.5);
             border-radius: 0.5rem;
             padding: 0.75rem;
-            color: var(--cyan-400);
+            color: #67e8f9;
             word-wrap: break-word;
             margin-bottom: 1rem;
             font-family: monospace;
@@ -181,28 +215,34 @@
 
         .modal-button {
             width: 100%;
-            font-weight: bold;
+            font-weight: 600;
+            font-size: 1rem;
             padding: 0.75rem 1rem;
             border: none;
             border-radius: 0.5rem;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
             margin-bottom: 0.75rem;
-            color: var(--text-light);
+            color: var(--bg-dark);
         }
         
         .modal-button.copy {
-            background-color: var(--cyan-600);
+            background-color: #0891b2;
+            color: var(--text-light);
         }
         .modal-button.copy:hover {
-            background-color: var(--cyan-500);
+            background-color: #06b6d4;
+            box-shadow: 0 0 15px var(--cyan-glow);
         }
         
         .modal-button.close {
-            background-color: #4b5563; /* gray-600 */
+            background-color: var(--button-bg);
+            color: var(--text-secondary);
+            border: 1px solid var(--glass-border);
         }
         .modal-button.close:hover {
-            background-color: #6b7280; /* gray-500 */
+            background-color: var(--button-hover-bg);
+            color: var(--text-light);
         }
 
         .info-list {
@@ -213,8 +253,8 @@
             color: var(--text-secondary);
         }
         .info-list li {
-            padding: 0.5rem;
-            border-bottom: 1px solid var(--logo-bg);
+            padding: 0.75rem 0.5rem;
+            border-bottom: 1px solid var(--glass-border);
             display: flex;
             justify-content: space-between;
         }
@@ -222,33 +262,9 @@
             border-bottom: none;
         }
         .info-list li strong {
-            color: var(--cyan-400);
+            color: #67e8f9;
             margin-right: 1rem;
-        }
-
-        /* Responsive full-screen for mobile */
-        @media (max-width: 480px) {
-            body {
-                display: block;
-                padding: 0;
-            }
-
-            .container {
-                max-width: 100%;
-                height: 100vh;
-            }
-
-            .card {
-                height: 100%;
-                border-radius: 0;
-                box-sizing: border-box;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-around;
-            }
-             .keypad-btn {
-                padding: 0.75rem; /* Slightly smaller padding on mobile */
-             }
+            font-weight: 600;
         }
     </style>
 </head>
@@ -257,7 +273,6 @@
     <div class="container">
         <main class="card">
             <div class="password-container">
-                 <p class="password-label">Enter Code</p>
                  <div id="password-display" class="password-display" aria-live="polite"></div>
             </div>
             <div id="keypad" class="keypad">
@@ -351,9 +366,10 @@
             function updateDisplay() {
                 passwordDisplay.innerHTML = '';
                 for (var i = 0; i < currentInput.length; i++) {
-                    var dot = document.createElement('div');
-                    dot.className = 'password-dot';
-                    passwordDisplay.appendChild(dot);
+                    var charSpan = document.createElement('span');
+                    charSpan.className = 'password-char';
+                    charSpan.textContent = '•';
+                    passwordDisplay.appendChild(charSpan);
                 }
             }
             
@@ -414,12 +430,14 @@
                     if (key === 'backspace') {
                         if (currentInput.length > 0) {
                            currentInput = currentInput.slice(0, -1);
+                           passwordDisplay.classList.add('pop');
                         }
                     } else if (key === 'enter') {
                         handleEnter();
                     } else {
                         if (currentInput.length < MAX_LENGTH) {
                             currentInput += key;
+                            passwordDisplay.classList.add('pop');
                         }
                     }
                     updateDisplay();
@@ -437,29 +455,25 @@
             copyBtn.addEventListener('click', function() {
                 if (!currentUrlForModal) return;
 
-                var tempTextArea = document.createElement('textarea');
-                tempTextArea.value = currentUrlForModal;
-                tempTextArea.setAttribute('readonly', '');
-                tempTextArea.style.position = 'absolute';
-                tempTextArea.style.left = '-9999px';
-                document.body.appendChild(tempTextArea);
-                
-                tempTextArea.select();
-                
-                try {
-                    document.execCommand('copy');
+                navigator.clipboard.writeText(currentUrlForModal).then(function() {
                     copyBtn.textContent = 'Copied!';
-                } catch (err) {
+                    setTimeout(function() {
+                        copyBtn.textContent = 'Copy Link';
+                    }, 2000);
+                }, function() {
                     copyBtn.textContent = 'Copy Failed';
-                }
-                
-                document.body.removeChild(tempTextArea);
-
-                setTimeout(function() {
-                    copyBtn.textContent = 'Copy Link';
-                }, 2000);
+                     setTimeout(function() {
+                        copyBtn.textContent = 'Copy Link';
+                    }, 2000);
+                });
             });
             
+            passwordDisplay.addEventListener('animationend', function(e) {
+                if (e.animationName === 'pop') {
+                    passwordDisplay.classList.remove('pop');
+                }
+            });
+
             updateDisplay();
         })();
     </script>
