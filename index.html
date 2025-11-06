@@ -4,53 +4,41 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Key</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #030712;
-            --text-light: #f9fafb;
-            --text-secondary: #d1d5db;
-            --cyan-glow: rgba(34, 211, 238, 0.4);
-            --gold-glow: rgba(212, 169, 74, 0.5);
-            --glass-bg: rgba(31, 41, 55, 0.25);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --button-bg: rgba(55, 65, 81, 0.4);
-            --button-hover-bg: rgba(55, 65, 81, 0.7);
+            --bg-gradient-start: #1c1c1c;
+            --bg-gradient-end: #000000;
+            --card-bg: #1a1a1a;
+            --display-bg: #0f0f0f;
+            --button-bg: #2c2c2c;
+            --button-hover-bg: #3a3a3a;
+            
+            --text-light: #f5f5f5;
+            --text-secondary: #a0a0a0;
+            --text-function: #f5f5f5;
+            --accent-gold: #ffc966;
+            --special-border: var(--accent-gold);
         }
 
         *, *::before, *::after {
             box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         body {
             margin: 0;
-            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            background-color: var(--bg-dark);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--bg-gradient-end);
+            background-image: linear-gradient(160deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
             color: var(--text-light);
             overflow: hidden;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(320deg, #0891b2, #7c3aed, #030712);
-            background-size: 400% 400%;
-            animation: gradient-animation 20s ease infinite;
-            z-index: -1;
-        }
-
-        @keyframes gradient-animation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            height: 100vh;
         }
 
         .container {
             width: 100%;
-            height: 100vh;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -58,15 +46,13 @@
         }
 
         .card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 1.5rem;
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            padding: 2.5rem;
+            background-color: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 2rem;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            padding: 3rem;
             width: 100%;
-            max-width: 26rem;
+            max-width: 32rem; /* Increased size */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -74,21 +60,21 @@
 
         /* Password Display */
         .password-container {
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
             width: 100%;
         }
         .password-display {
-            background-color: rgba(3, 7, 18, 0.5);
-            border-radius: 0.75rem;
-            padding: 1rem;
-            min-height: 3rem;
+            background-color: var(--display-bg);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            min-height: 5.5rem; /* Increased height */
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.75rem;
-            letter-spacing: 0.5rem;
-            font-size: 2rem;
+            font-size: 3.5rem; /* Increased font size */
             color: var(--text-light);
+            box-shadow: inset 0 3px 6px rgba(0,0,0,0.4);
         }
         .password-char {
             display: inline-block;
@@ -121,43 +107,43 @@
         .keypad {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
+            gap: 1.5rem; /* Increased gap */
             width: 100%;
         }
 
         .keypad-btn {
-            font-size: 1.5rem;
+            font-size: 2.25rem; /* Increased font size */
             font-weight: 600;
             color: var(--text-light);
-            background: var(--button-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 0.75rem;
-            padding: 1rem;
+            background-color: var(--button-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            padding: 1.25rem;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease-out;
             -webkit-tap-highlight-color: transparent;
             aspect-ratio: 1 / 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.35);
         }
         .keypad-btn:hover {
             background-color: var(--button-hover-bg);
-            box-shadow: 0 0 15px var(--cyan-glow);
-            transform: translateY(-2px);
         }
         .keypad-btn:active {
-            transform: scale(0.95);
+            transform: translateY(2px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.35);
         }
         .keypad-btn.function, .keypad-btn.operator {
-            color: #22d3ee;
+            color: var(--text-function);
+        }
+        .keypad-btn.special {
+            color: var(--accent-gold);
+            border: 2px solid var(--special-border);
         }
         .keypad-btn.enter {
-            color: #d4a94a;
-        }
-        .keypad-btn.enter:hover {
-             box-shadow: 0 0 15px var(--gold-glow);
+             color: var(--accent-gold);
         }
 
         /* Modal Styles */
@@ -165,7 +151,7 @@
             display: none;
             position: fixed;
             inset: 0;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             align-items: center;
@@ -181,12 +167,12 @@
         }
 
         .modal-content {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 1.5rem;
-            padding: 2rem;
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 2rem;
+            padding: 2.5rem;
             width: 100%;
-            max-width: 24rem;
+            max-width: 32rem;
             text-align: center;
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
@@ -194,7 +180,7 @@
         .modal-content h2 {
             font-size: 1.25rem;
             font-weight: 700;
-            color: #67e8f9;
+            color: var(--accent-gold);
             margin: 0 0 0.5rem 0;
         }
         
@@ -204,13 +190,14 @@
         }
 
         .url-display {
-            background-color: rgba(3, 7, 18, 0.5);
+            background-color: var(--display-bg);
             border-radius: 0.5rem;
             padding: 0.75rem;
-            color: #67e8f9;
+            color: var(--text-light);
             word-wrap: break-word;
             margin-bottom: 1rem;
             font-family: monospace;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .modal-button {
@@ -223,25 +210,23 @@
             cursor: pointer;
             transition: all 0.3s;
             margin-bottom: 0.75rem;
-            color: var(--bg-dark);
         }
         
         .modal-button.copy {
-            background-color: #0891b2;
-            color: var(--text-light);
+            background-color: var(--button-bg);
+            color: var(--accent-gold);
         }
         .modal-button.copy:hover {
-            background-color: #06b6d4;
-            box-shadow: 0 0 15px var(--cyan-glow);
+            background-color: var(--button-hover-bg);
         }
         
         .modal-button.close {
-            background-color: var(--button-bg);
+            background-color: transparent;
             color: var(--text-secondary);
-            border: 1px solid var(--glass-border);
+            border: 1px solid var(--button-bg);
         }
         .modal-button.close:hover {
-            background-color: var(--button-hover-bg);
+            background-color: var(--button-bg);
             color: var(--text-light);
         }
 
@@ -254,7 +239,7 @@
         }
         .info-list li {
             padding: 0.75rem 0.5rem;
-            border-bottom: 1px solid var(--glass-border);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             justify-content: space-between;
         }
@@ -262,7 +247,7 @@
             border-bottom: none;
         }
         .info-list li strong {
-            color: #67e8f9;
+            color: var(--accent-gold);
             margin-right: 1rem;
             font-weight: 600;
         }
@@ -280,30 +265,30 @@
                 <button class="keypad-btn function" data-key="C" aria-label="Clear">C</button>
                 <button class="keypad-btn operator" data-key="/" aria-label="Divide">/</button>
                 <button class="keypad-btn operator" data-key=":" aria-label="Colon">:</button>
-                <button class="keypad-btn function" data-key="backspace" aria-label="Backspace">&larr;</button>
+                <button class="keypad-btn operator" data-key="¥" aria-label="Yen">¥</button>
                 <!-- Row 2 -->
                 <button class="keypad-btn" data-key="7" aria-label="7">7</button>
                 <button class="keypad-btn" data-key="8" aria-label="8">8</button>
                 <button class="keypad-btn" data-key="9" aria-label="9">9</button>
-                <button class="keypad-btn operator" data-key="¥" aria-label="Yen">¥</button>
+                <button class="keypad-btn operator" data-key="-" aria-label="Subtract">-</button>
                 <!-- Row 3 -->
                 <button class="keypad-btn" data-key="4" aria-label="4">4</button>
                 <button class="keypad-btn" data-key="5" aria-label="5">5</button>
                 <button class="keypad-btn" data-key="6" aria-label="6">6</button>
-                <button class="keypad-btn operator" data-key="-" aria-label="Subtract">-</button>
+                <button class="keypad-btn operator" data-key="+" aria-label="Add">+</button>
                 <!-- Row 4 -->
                 <button class="keypad-btn" data-key="1" aria-label="1">1</button>
                 <button class="keypad-btn" data-key="2" aria-label="2">2</button>
                 <button class="keypad-btn" data-key="3" aria-label="3">3</button>
-                <button class="keypad-btn operator" data-key="+" aria-label="Add">+</button>
-                <!-- Row 5 -->
+                <button class="keypad-btn function" data-key="backspace" aria-label="Backspace">&larr;</button>
+                 <!-- Row 5 -->
                 <button class="keypad-btn operator" data-key="*" aria-label="Multiply">*</button>
                 <button class="keypad-btn" data-key="0" aria-label="0">0</button>
-                <button class="keypad-btn operator" data-key="#" aria-label="Hash">#</button>
+                <button class="keypad-btn special" data-key="#" aria-label="Hash">#</button>
                 <button class="keypad-btn enter" data-key="enter" aria-label="Enter">
-                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor">
-                        <path d="M0 0h24v24H0V0z" fill="none"/>
-                        <path d="M19 7v4H5.83l3.58-3.59L8 6l-6 6 6 6 1.41-1.41L5.83 13H21V7h-2z"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 10 4 15 9 20"></polyline>
+                        <path d="M20 4v7a4 4 0 0 1-4 4H4"></path>
                     </svg>
                 </button>
             </div>
@@ -422,6 +407,8 @@
                 if (target) {
                     var key = target.getAttribute('data-key');
                     
+                    passwordDisplay.classList.add('pop');
+
                     if (key === 'C') {
                         clearInput();
                         return;
@@ -430,14 +417,12 @@
                     if (key === 'backspace') {
                         if (currentInput.length > 0) {
                            currentInput = currentInput.slice(0, -1);
-                           passwordDisplay.classList.add('pop');
                         }
                     } else if (key === 'enter') {
                         handleEnter();
                     } else {
                         if (currentInput.length < MAX_LENGTH) {
                             currentInput += key;
-                            passwordDisplay.classList.add('pop');
                         }
                     }
                     updateDisplay();
