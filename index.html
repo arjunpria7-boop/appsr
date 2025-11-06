@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF--8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chrome Link Opener</title>
+    <title>Key</title>
     <style>
         :root {
             --bg-dark: #030712;
@@ -15,6 +15,9 @@
             --cyan-500: #06b6d4;
             --cyan-600: #0891b2;
             --ring-cyan: #06b6d4;
+            --gray-600: #4b5563;
+            --gold-600: #c59633;
+            --gold-500: #d4a94a;
         }
 
         body {
@@ -36,18 +39,6 @@
             text-align: center;
         }
 
-        .header h1 {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--cyan-400);
-            margin: 0 0 0.5rem 0;
-        }
-
-        .header p {
-            color: var(--text-secondary);
-            margin: 0 0 2rem 0;
-        }
-
         .card {
             background-color: var(--card-bg);
             border-radius: 1rem;
@@ -55,61 +46,94 @@
             padding: 2rem;
         }
 
-        .logo-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-            justify-items: center;
+        /* Password Display */
+        .password-container {
+            margin-bottom: 2rem;
         }
-
-        .logo-item {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background-color: var(--logo-bg);
-            padding: 1rem;
-            border-radius: 0.5rem;
-            transition: transform 0.3s ease;
-            width: 100%;
-            height: 100%;
-            box-sizing: border-box;
-        }
-        
-        .logo-item.active {
-            cursor: pointer;
-            border: 2px solid var(--ring-cyan);
-        }
-        
-        .logo-item.active:hover {
-            transform: scale(1.1);
-        }
-
-        .logo-item.inactive {
-            opacity: 0.5;
-            cursor: default;
-        }
-
-        .logo-item img {
-            height: 5rem;
-            width: auto;
-            object-fit: contain;
-        }
-        
-        .logo-label {
-            margin-top: 0.75rem;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-            line-height: 1.2;
-            word-break: break-word;
-        }
-
-        .footer {
-            margin-top: 2rem;
+        .password-label {
             color: var(--text-secondary);
             font-size: 0.875rem;
+            margin: 0 0 0.5rem 0;
+            text-align: left;
         }
+        .password-display {
+            background-color: var(--bg-dark);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            min-height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            transition: transform 0.2s ease;
+            flex-grow: 1;
+        }
+        .password-dot {
+            width: 1rem;
+            height: 1rem;
+            background-color: var(--cyan-400);
+            border-radius: 50%;
+        }
+        .password-display.shake {
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        /* Keypad */
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+        }
+
+        .keypad-btn {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--text-light);
+            background-color: var(--logo-bg);
+            border: 2px solid transparent;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+            -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
+            aspect-ratio: 1 / 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .keypad-btn:hover {
+            background-color: rgba(55, 65, 81, 0.8);
+        }
+        .keypad-btn:active {
+            border-color: var(--ring-cyan);
+        }
+        .keypad-btn.operator {
+            background-color: var(--gray-600);
+        }
+        .keypad-btn.operator:hover {
+            background-color: #6b7280;
+        }
+        .keypad-btn.function {
+            background-color: var(--cyan-600);
+            color: var(--bg-dark);
+        }
+        .keypad-btn.function:hover {
+            background-color: var(--cyan-500);
+        }
+        .keypad-btn.enter {
+            background-color: var(--gold-600);
+            color: var(--bg-dark);
+        }
+        .keypad-btn.enter:hover {
+            background-color: var(--gold-500);
+        }
+
 
         /* Modal Styles */
         .modal-overlay {
@@ -180,44 +204,95 @@
         .modal-button.close:hover {
             background-color: #6b7280; /* gray-500 */
         }
+
+        .info-list {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0;
+            text-align: left;
+            color: var(--text-secondary);
+        }
+        .info-list li {
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--logo-bg);
+            display: flex;
+            justify-content: space-between;
+        }
+        .info-list li:last-child {
+            border-bottom: none;
+        }
+        .info-list li strong {
+            color: var(--cyan-400);
+            margin-right: 1rem;
+        }
+
+        /* Responsive full-screen for mobile */
+        @media (max-width: 480px) {
+            body {
+                display: block;
+                padding: 0;
+            }
+
+            .container {
+                max-width: 100%;
+                height: 100vh;
+            }
+
+            .card {
+                height: 100%;
+                border-radius: 0;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+            }
+             .keypad-btn {
+                padding: 0.75rem; /* Slightly smaller padding on mobile */
+             }
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <header class="header">
-            <h1>Chrome Link Opener</h1>
-            <p>Tap an active icon to open its link.</p>
-        </header>
-
         <main class="card">
-            <div class="logo-grid">
-                <div id="open-link-btn-1" class="logo-item active" role="button" tabindex="0" aria-label="Open Link 1 in Chrome">
-                    <img src="https://i.postimg.cc/HxTWJgHh/20251028-164413.png" alt="Open Link 1"/>
-                </div>
-                <div id="open-link-btn-2" class="logo-item active" role="button" tabindex="0" aria-label="Open Link 2 in Chrome">
-                    <img src="https://i.postimg.cc/SsYdzwrV/20251028-164252.png" alt="Open Link 2"/>
-                </div>
-                <div id="open-link-btn-3" class="logo-item active" role="button" tabindex="0" aria-label="Open Link 3 in Chrome">
-                    <img src="https://i.postimg.cc/nzfj0gxy/20251028-164547.png" alt="Open Link 3"/>
-                </div>
-                <div id="open-link-btn-4" class="logo-item active" role="button" tabindex="0" aria-label="Open Link 4 in Chrome">
-                    <img src="https://i.postimg.cc/BvHtLpFh/20251028-164355.png" alt="Open Link 4"/>
-                </div>
-                <div id="open-link-btn-5" class="logo-item active" role="button" tabindex="0" aria-label="Open Link 5">
-                    <img src="https://i.postimg.cc/HxTWJgHh/20251028-164413.png" alt="Open Link 5" style="filter: hue-rotate(180deg);"/>
-                    <p class="logo-label">HOKKI MAS ARJ v1.2</p>
-                </div>
-                <div id="open-link-btn-6" class="logo-item active" role="button" tabindex="0" aria-label="Open Link 6">
-                    <img src="https://i.postimg.cc/nzfj0gxy/20251028-164547.png" alt="Open Link 6" style="filter: hue-rotate(270deg);"/>
-                    <p class="logo-label">Kalkulator invest</p>
-                </div>
+            <div class="password-container">
+                 <p class="password-label">Enter Code</p>
+                 <div id="password-display" class="password-display" aria-live="polite"></div>
+            </div>
+            <div id="keypad" class="keypad">
+                <!-- Row 1 -->
+                <button class="keypad-btn function" data-key="C" aria-label="Clear">C</button>
+                <button class="keypad-btn operator" data-key="/" aria-label="Divide">/</button>
+                <button class="keypad-btn operator" data-key=":" aria-label="Colon">:</button>
+                <button class="keypad-btn function" data-key="backspace" aria-label="Backspace">&larr;</button>
+                <!-- Row 2 -->
+                <button class="keypad-btn" data-key="7" aria-label="7">7</button>
+                <button class="keypad-btn" data-key="8" aria-label="8">8</button>
+                <button class="keypad-btn" data-key="9" aria-label="9">9</button>
+                <button class="keypad-btn operator" data-key="¥" aria-label="Yen">¥</button>
+                <!-- Row 3 -->
+                <button class="keypad-btn" data-key="4" aria-label="4">4</button>
+                <button class="keypad-btn" data-key="5" aria-label="5">5</button>
+                <button class="keypad-btn" data-key="6" aria-label="6">6</button>
+                <button class="keypad-btn operator" data-key="-" aria-label="Subtract">-</button>
+                <!-- Row 4 -->
+                <button class="keypad-btn" data-key="1" aria-label="1">1</button>
+                <button class="keypad-btn" data-key="2" aria-label="2">2</button>
+                <button class="keypad-btn" data-key="3" aria-label="3">3</button>
+                <button class="keypad-btn operator" data-key="+" aria-label="Add">+</button>
+                <!-- Row 5 -->
+                <button class="keypad-btn operator" data-key="*" aria-label="Multiply">*</button>
+                <button class="keypad-btn" data-key="0" aria-label="0">0</button>
+                <button class="keypad-btn operator" data-key="#" aria-label="Hash">#</button>
+                <button class="keypad-btn enter" data-key="enter" aria-label="Enter">
+                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor">
+                        <path d="M0 0h24v24H0V0z" fill="none"/>
+                        <path d="M19 7v4H5.83l3.58-3.59L8 6l-6 6 6 6 1.41-1.41L5.83 13H21V7h-2z"/>
+                    </svg>
+                </button>
             </div>
         </main>
-
-        <footer class="footer">
-            <p>Designed for devices where the default browser has issues with modern websites.</p>
-        </footer>
     </div>
     
     <!-- Fallback Modal -->
@@ -230,58 +305,133 @@
             <button id="close-btn" class="modal-button close">Close</button>
         </div>
     </div>
+    
+    <!-- Info Modal -->
+    <div id="info-modal" class="modal-overlay" role="dialog" aria-modal="true">
+        <div class="modal-content">
+            <h2>Key Guide</h2>
+            <p>Use the following codes to open the corresponding links.</p>
+            <ul class="info-list">
+                <li><strong>Key 1:</strong><span>KGGGRJ App</span></li>
+                <li><strong>Key 2:</strong><span>A V1 App</span></li>
+                <li><strong>Key 3:</strong><span>Jadwal Pasaran</span></li>
+                <li><strong>Key 4:</strong><span>AI Studio Drive</span></li>
+                <li><strong>Key 5 / 12:</strong><span>Hokky Mas</span></li>
+                <li><strong>Key 6:</strong><span>Investment Calculator</span></li>
+            </ul>
+            <button id="info-close-btn" class="modal-button close">Close</button>
+        </div>
+    </div>
 
     <script>
-        // Use 'var' and function expressions for maximum browser compatibility
         (function() {
-            var links = {
-                'open-link-btn-1': 'https://kgggrj.vercel.app/',
-                'open-link-btn-2': 'https://a-v1-0.vercel.app/',
-                'open-link-btn-3': 'https://jadwal-pasaran-opal.vercel.app/',
-                'open-link-btn-4': 'https://ai.studio/apps/drive/1Ss9zSlhRjrBTI3HBu6k3RLyYfMiKpXWr',
-                'open-link-btn-5': 'https://hokky-mas-arj-v1-2.vercel.app/',
-                'open-link-btn-6': 'https://kalkulator-invest.vercel.app/'
+            var codes = {
+                '1': 'https://kgggrj.vercel.app/',
+                '2': 'https://a-v1-0.vercel.app/',
+                '3': 'https://jadwal-pasaran-opal.vercel.app/',
+                '4': 'https://ai.studio/apps/drive/1Ss9zSlhRjrBTI3HBu6k3RLyYfMiKpXWr',
+                '5': 'https://hokky-mas-arj-v1-2.vercel.app/',
+                '6': 'https://kalkulator-invest.vercel.app/',
+                '12': 'https://hokky-mas-arj-v1-2.vercel.app/'
             };
 
             var modal = document.getElementById('fallback-modal');
+            var infoModal = document.getElementById('info-modal');
             var urlText = document.getElementById('url-text');
             var copyBtn = document.getElementById('copy-btn');
             var closeBtn = document.getElementById('close-btn');
+            var infoCloseBtn = document.getElementById('info-close-btn');
+            var keypad = document.getElementById('keypad');
+            var passwordDisplay = document.getElementById('password-display');
             
             var currentUrlForModal = '';
+            var currentInput = '';
+            var MAX_LENGTH = 8;
 
-            var setupLinkButton = function(buttonId) {
-                var button = document.getElementById(buttonId);
-                var url = links[buttonId];
-
-                if (button && url) {
-                    button.addEventListener('click', function() {
-                        currentUrlForModal = url;
-                        urlText.textContent = currentUrlForModal;
-                        modal.style.display = 'flex';
-                        
-                        var intentUrl;
-                        if (url.startsWith('http')) {
-                            intentUrl = "intent://" + url.replace(/^https?:\/\//, '') + "#Intent;scheme=https;package=com.android.chrome;end;";
-                        } else {
-                            // For other schemes like content://, try to open it directly.
-                            // The Android system should handle it. The modal is a fallback.
-                            intentUrl = url;
-                        }
-                        
-                        window.location.href = intentUrl;
-                    });
+            function updateDisplay() {
+                passwordDisplay.innerHTML = '';
+                for (var i = 0; i < currentInput.length; i++) {
+                    var dot = document.createElement('div');
+                    dot.className = 'password-dot';
+                    passwordDisplay.appendChild(dot);
                 }
-            };
+            }
             
-            for (var buttonId in links) {
-                if (Object.prototype.hasOwnProperty.call(links, buttonId)) {
-                    setupLinkButton(buttonId);
+            function clearInput() {
+                currentInput = '';
+                updateDisplay();
+            }
+            
+            function handleIncorrectCode() {
+                passwordDisplay.classList.add('shake');
+                setTimeout(function() {
+                    passwordDisplay.classList.remove('shake');
+                    clearInput();
+                }, 500);
+            }
+            
+            function handleCorrectCode(url) {
+                currentUrlForModal = url;
+                urlText.textContent = currentUrlForModal;
+                modal.style.display = 'flex';
+                
+                var intentUrl;
+                if (url.startsWith('http')) {
+                    intentUrl = "intent://" + url.replace(/^https?:\/\//, '') + "#Intent;scheme=https;package=com.android.chrome;end;";
+                } else {
+                    intentUrl = url;
+                }
+                
+                window.location.href = intentUrl;
+                clearInput();
+            }
+
+            function handleEnter() {
+                if (currentInput === '511') {
+                    infoModal.style.display = 'flex';
+                    clearInput();
+                    return;
+                }
+                
+                var url = codes[currentInput];
+                if (url) {
+                    handleCorrectCode(url);
+                } else {
+                    handleIncorrectCode();
                 }
             }
 
+            keypad.addEventListener('click', function(e) {
+                var target = e.target.closest('.keypad-btn');
+                if (target) {
+                    var key = target.getAttribute('data-key');
+                    
+                    if (key === 'C') {
+                        clearInput();
+                        return;
+                    }
+                    
+                    if (key === 'backspace') {
+                        if (currentInput.length > 0) {
+                           currentInput = currentInput.slice(0, -1);
+                        }
+                    } else if (key === 'enter') {
+                        handleEnter();
+                    } else {
+                        if (currentInput.length < MAX_LENGTH) {
+                            currentInput += key;
+                        }
+                    }
+                    updateDisplay();
+                }
+            });
+
             closeBtn.addEventListener('click', function() {
                 modal.style.display = 'none';
+            });
+
+            infoCloseBtn.addEventListener('click', function() {
+                infoModal.style.display = 'none';
             });
             
             copyBtn.addEventListener('click', function() {
@@ -309,6 +459,8 @@
                     copyBtn.textContent = 'Copy Link';
                 }, 2000);
             });
+            
+            updateDisplay();
         })();
     </script>
 </body>
