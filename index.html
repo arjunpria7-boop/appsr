@@ -315,9 +315,10 @@
                 <li><strong>Key 1:</strong><span>KGGGRJ App</span></li>
                 <li><strong>Key 2:</strong><span>A V1 App</span></li>
                 <li><strong>Key 3:</strong><span>Jadwal Pasaran</span></li>
-                <li><strong>Key 4:</strong><span>AI Studio Drive</span></li>
-                <li><strong>Key 5 / 12:</strong><span>Arjun Analis</span></li>
+                <li><strong>Key 4:</strong><span>Pola 1 App</span></li>
+                <li><strong>Key 5:</strong><span>Arjun Analis</span></li>
                 <li><strong>Key 6:</strong><span>Investment Calculator</span></li>
+                <li><strong>Key 12:</strong><span>Hokky Mas Arj V1.2</span></li>
             </ul>
             <button id="info-close-btn" class="modal-button close">Close</button>
         </div>
@@ -329,10 +330,10 @@
                 '1': 'https://kgggrj.vercel.app/',
                 '2': 'https://a-v1-0.vercel.app/',
                 '3': 'https://jadwal-pasaran-opal.vercel.app/',
-                '4': 'https://ai.studio/apps/drive/1Ss9zSlhRjrBTI3HBu6k3RLyYfMiKpXWr',
+                '4': 'https://pola1.vercel.app/',
                 '5': 'https://arjun-analis.vercel.app/',
                 '6': 'https://kalkulator-invest.vercel.app/',
-                '12': 'https://arjun-analis.vercel.app/'
+                '12': 'https://hokky-mas-arj-v1-2.vercel.app/'
             };
 
             var modal = document.getElementById('fallback-modal');
@@ -388,15 +389,15 @@
             }
 
             function handleEnter() {
+                // Case 1: Special code for the info modal
                 if (currentInput === '511') {
                     infoModal.style.display = 'flex';
                     clearInput();
-                    return;
-                }
-                
-                var url = codes[currentInput];
-                if (url) {
+                // Case 2: A valid code from the 'codes' object
+                } else if (codes[currentInput]) {
+                    var url = codes[currentInput];
                     handleCorrectCode(url);
+                // Case 3: Incorrect code
                 } else {
                     handleIncorrectCode();
                 }
