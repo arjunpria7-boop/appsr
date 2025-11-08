@@ -1,5 +1,5 @@
 {
-  "name": "key. private",
-  "description": "An application for older phones to open HTTPS links directly in the Chrome browser, bypassing the default browser's limitations.",
+  "name": "Key & Calculator",
+  "description": "An application for older phones that functions as both a calculator and a tool to open HTTPS links directly in the Chrome browser, bypassing default browser limitations.",
   "requestFramePermissions": []
 }
